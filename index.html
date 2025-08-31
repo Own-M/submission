@@ -3,70 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gainers Future - Scholarship Portal</title>
+<title>Interactive Scholarship Roadmap</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   body { font-family: 'Inter', sans-serif; }
-  .task-card { position: relative; border-radius: 1rem; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-  .task-card:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-  .card-content { padding: 2rem; min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; }
-  .card-button { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 0.5rem; text-align: center; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
-  .card-button:hover { background: rgba(255,255,255,0.4); transform: translateY(-3px); }
+  .roadmap-container {
+    position: relative;
+    margin: 2rem auto;
+    max-width: 1000px;
+  }
+  .roadmap-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      #60a5fa,
+      #60a5fa 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  }
+  .roadmap-card {
+    width: 45%;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    margin: 2rem 0;
+    position: relative;
+    background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+    transition: all 0.5s ease;
+    cursor: pointer;
+  }
+  .roadmap-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  }
+  .roadmap-card.left { margin-right: auto; }
+  .roadmap-card.right { margin-left: auto; }
+
+  .roadmap-icon {
+    position: absolute;
+    top: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: all 0.5s ease;
+  }
+  .roadmap-card:hover .roadmap-icon {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: rotate(360deg) scale(1.1);
+  }
+  .roadmap-card.left .roadmap-icon { right: -70px; }
+  .roadmap-card.right .roadmap-icon { left: -70px; }
+
+  /* Gradient hover highlights */
+  .bg-blue-gradient { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+  .bg-purple-gradient { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+  .bg-emerald-gradient { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+  .bg-rose-gradient { background: linear-gradient(135deg, #ffe4e6, #fecdd3); }
+
+  .roadmap-card.bg-blue-gradient:hover { background: linear-gradient(135deg, #bfdbfe, #93c5fd); }
+  .roadmap-card.bg-purple-gradient:hover { background: linear-gradient(135deg, #ddd6fe, #c4b5fd); }
+  .roadmap-card.bg-emerald-gradient:hover { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); }
+  .roadmap-card.bg-rose-gradient:hover { background: linear-gradient(135deg, #fecdd3, #fda4af); }
 </style>
 </head>
-<body class="bg-gray-50 p-6">
-<div class="container mx-auto max-w-6xl">
-<header class="text-center mb-12">
-<h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2">Gainers Future</h1>
-<p class="text-gray-600">Your Fully Funded Scholarship Journey Starts Here</p>
+<body class="bg-gradient-to-r from-sky-50 to-indigo-50 min-h-screen">
+
+<header class="text-center py-10">
+  <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">Scholarship Roadmap</h1>
+  <p class="text-gray-600 mt-2">Step by step guidance for your fully funded scholarship journey</p>
 </header>
-<main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-<!-- Card Template -->
-<div class="task-card bg-gradient-to-br from-blue-500 to-blue-700">
-<div class="card-content">
-<h3 class="text-2xl font-bold text-white">Common Information</h3>
-<p class="text-white opacity-90">Submit your core academic, contact, and financial details.</p>
-<div class="card-button text-white">Submit</div>
-</div>
+<div class="roadmap-container">
+  <div class="roadmap-line"></div>
+
+  <!-- Step 1 -->
+  <div class="roadmap-card left bg-blue-gradient">
+    <div class="roadmap-icon">1</div>
+    <h2 class="text-xl font-bold text-blue-900 mb-2">Submit Your Information</h2>
+    <p class="text-gray-700">Provide academic, contact, and financial details to start your journey.</p>
+    <a href="common.html" class="inline-block mt-3 text-blue-700 font-semibold">Open →</a>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="roadmap-card right bg-purple-gradient">
+    <div class="roadmap-icon">2</div>
+    <h2 class="text-xl font-bold text-purple-900 mb-2">Research Preferences</h2>
+    <p class="text-gray-700">Tell us your study preferences so we can find the best universities for you.</p>
+    <a href="research.html" class="inline-block mt-3 text-purple-700 font-semibold">Open →</a>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="roadmap-card left bg-emerald-gradient">
+    <div class="roadmap-icon">3</div>
+    <h2 class="text-xl font-bold text-emerald-900 mb-2">Email Communication</h2>
+    <p class="text-gray-700">Provide credentials for professor and admission communications.</p>
+    <a href="emai.html" class="inline-block mt-3 text-emerald-700 font-semibold">Open →</a>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="roadmap-card right bg-rose-gradient">
+    <div class="roadmap-icon">4</div>
+    <h2 class="text-xl font-bold text-rose-900 mb-2">Documentation</h2>
+    <p class="text-gray-700">Complete your Statement of Purpose (SOP) and Letter of Recommendation (LOR).</p>
+    <a href="doc.html" class="inline-block mt-3 text-rose-700 font-semibold">Open →</a>
+  </div>
 </div>
 
-<div class="task-card bg-gradient-to-br from-purple-500 to-purple-700">
-<div class="card-content">
-<h3 class="text-2xl font-bold text-white">Research Task</h3>
-<p class="text-white opacity-90">Provide your study preferences for us to find your ideal university.</p>
-<div class="card-button text-white">Submit</div>
-</div>
-</div>
+<footer class="text-center py-6 mt-10 bg-gray-100">
+  <p class="text-gray-600">Inspired by <a href="https://phitron.io/ai-ml-course" class="text-blue-600 underline">Phitron AI-ML Course Roadmap</a></p>
+</footer>
 
-<div class="task-card bg-gradient-to-br from-emerald-500 to-emerald-700">
-<div class="card-content">
-<h3 class="text-2xl font-bold text-white">Email Task</h3>
-<p class="text-white opacity-90">Share credentials for professor communications.</p>
-<div class="card-button text-white">Submit</div>
-</div>
-</div>
-
-<div class="task-card bg-gradient-to-br from-rose-500 to-rose-700">
-<div class="card-content">
-<h3 class="text-2xl font-bold text-white">Documentation Task</h3>
-<p class="text-white opacity-90">Complete your SOP & LOR submissions.</p>
-<div class="card-button text-white">Submit</div>
-</div>
-</div>
-
-</main>
-</div>
-<script>
-const buttons = document.querySelectorAll('.card-button');
-buttons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    alert('Submit action triggered!');
-  });
-});
-</script>
 </body>
 </html>
-
-
