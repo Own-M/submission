@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile for International University Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            background-image: linear-gradient(to top right, #f3f4f6, #e5e7eb);
+        }
+        
+        /* --- Animation Classes --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(-30px); }
+        }
+        @keyframes rowIn {
+            from { opacity: 0; max-height: 0; transform: scaleY(0.8); margin-bottom: 0; padding-top: 0; padding-bottom: 0;}
+            to { opacity: 1; max-height: 500px; transform: scaleY(1); margin-bottom: 0.5rem; padding-top: 1rem; padding-bottom: 1rem;}
+        }
+        @keyframes rowOut {
+            from { opacity: 1; max-height: 500px; transform: scaleY(1); margin-bottom: 0.5rem; padding-top: 1rem; padding-bottom: 1rem;}
+            to { opacity: 0; max-height: 0; transform: scaleY(0.8); margin-bottom: 0; padding-top: 0; padding-bottom: 0; border:0;}
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .form-step-active {
+            display: block;
+        }
+        .form-step.fade-out {
+            animation: fadeOut 0.4s ease-in forwards;
+        }
+
+        .dynamic-row {
+            animation: rowIn 0.4s ease-out forwards;
+            overflow: hidden;
+        }
+        .dynamic-row.removing {
+            animation: rowOut 0.4s ease-in forwards;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .input-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+        
+        .btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn:active {
+            transform: translateY(0px) scale(0.98);
+            box-shadow: none;
+        }
+
+        /* Improved input focus */
+        input:focus, textarea:focus, select:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="container mx-auto max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 md:p-12">
+            
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Student Profile Form</h1>
+                <p class="text-gray-500 mt-2">Your first step towards an international education. Please fill out your details with care.</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="mb-8">
+                <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%"></div>
+                </div>
+                <div id="stepIndicator" class="text-center text-sm text-gray-500 mt-2">Step 1 of 7</div>
+            </div>
+
+            <form id="studentForm">
+                <!-- Step 1: Academic Background -->
+                <div id="step-1" class="form-step">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">1. Academic Background</h2>
+                    
+                    <!-- School & College -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium text-gray-600 mb-4">School & College (SSC, HSC, O/A-Levels)</h3>
+                        <div id="school-container">
+                            <!-- Dynamic rows will be added here -->
+                        </div>
+                        <button type="button" id="add-school" class="mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 btn">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            Add Qualification
+                        </button>
+                    </div>
+
+                    <!-- University Education -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-600 mb-4">University Education (Bachelor's, Master's)</h3>
+                        <div id="university-container">
+                            <!-- Dynamic rows will be added here -->
+                        </div>
+                        <button type="button" id="add-university" class="mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 btn">
+                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            Add Degree
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: University Preferences -->
+                <div id="step-2" class="form-step">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">2. University Selection Questions</h2>
+                    <div class="space-y-6">
+                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">What is your preference? (Select all that apply)</label>
+                            <div id="preference-group" class="flex flex-wrap gap-x-6 gap-y-2 mt-2">
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="preference" value="Masters" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">Masters</span>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="preference" value="PhD" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">PhD</span>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="preference" value="Work" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">Work/Career</span>
+                                </label>
+                                <label class="inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" name="preference" value="Relocation" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span class="ml-2 text-gray-700">Relocation</span>
+                                </label>
+                            </div>
+                            <p id="preference-error" class="hidden text-sm text-red-600 mt-2">Please select at least one option.</p>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-2">Preferred Countries for Future Study/Work/Relocation</h3>
+                            <p class="text-sm text-gray-500 mb-4">Please indicate any specific countries where you are considering pursuing further education, professional opportunities, or long-term residence.</p>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium text-gray-600 w-12 text-center">1st</span>
+                                    <select name="preferred_country_1" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                        <option value="">Choose your preferred country</option>
+                                        <option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="New Zealand">New Zealand</option><option value="Ireland">Ireland</option><option value="France">France</option><option value="Netherlands">Netherlands</option><option value="Sweden">Sweden</option><option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium text-gray-600 w-12 text-center">2nd</span>
+                                    <select name="preferred_country_2" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                        <option value="">Choose your preferred country</option>
+                                        <option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="New Zealand">New Zealand</option><option value="Ireland">Ireland</option><option value="France">France</option><option value="Netherlands">Netherlands</option><option value="Sweden">Sweden</option><option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium text-gray-600 w-12 text-center">3rd</span>
+                                    <select name="preferred_country_3" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                        <option value="">Choose your preferred country</option>
+                                        <option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="New Zealand">New Zealand</option><option value="Ireland">Ireland</option><option value="France">France</option><option value="Netherlands">Netherlands</option><option value="Sweden">Sweden</option><option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium text-gray-600 w-12 text-center">4th</span>
+                                    <select name="preferred_country_4" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                        <option value="">Choose your preferred country</option>
+                                        <option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="New Zealand">New Zealand</option><option value="Ireland">Ireland</option><option value="France">France</option><option value="Netherlands">Netherlands</option><option value="Sweden">Sweden</option><option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="font-medium text-gray-600 w-12 text-center">5th</span>
+                                    <select name="preferred_country_5" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                        <option value="">Choose your preferred country</option>
+                                        <option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="New Zealand">New Zealand</option><option value="Ireland">Ireland</option><option value="France">France</option><option value="Netherlands">Netherlands</option><option value="Sweden">Sweden</option><option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="current-subject" class="block text-sm font-medium text-gray-700 mb-1">What subject are you currently studying?</label>
+                            <input type="text" id="current-subject" name="current_subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition">
+                        </div>
+                        
+                        <div>
+                            <label for="fields-of-interest" class="block text-sm font-medium text-gray-700 mb-1">Which academic fields or areas of study interest you the most?</label>
+                            <textarea id="fields-of-interest" name="fields_of_interest" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                        </div>
+                        
+                        <div>
+                             <label for="research-interest" class="block text-sm font-medium text-gray-700 mb-1">What is your area of interest?</label>
+                             <textarea id="research-interest" name="research_interest" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., near-term risk for suicidal behaviors, acute sole or simultaneous substance use..."></textarea>
+                        </div>
+                        
+                        <div>
+                             <label for="preferred-universities" class="block text-sm font-medium text-gray-700 mb-1">Do you have any specific universities in mind?</label>
+                             <textarea id="preferred-universities" name="preferred_universities" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                        </div>
+
+                         <div class="p-4 bg-blue-50 border-l-4 border-blue-500 text-blue-800 rounded-r-lg">
+                            <p class="text-sm">Once answered, we'll research the best universities for you. A curated list will be provided separately.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Contact Information -->
+                <div id="step-3" class="form-step">
+                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">3. Contact Information</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label for="current-address" class="block text-sm font-medium text-gray-700 mb-1">Current Residential Address</label>
+                            <textarea id="current-address" name="current_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" required></textarea>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="permanent-address" class="block text-sm font-medium text-gray-700 mb-1">Permanent Home Address (if different)</label>
+                            <textarea id="permanent-address" name="permanent_address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                        </div>
+                         <div>
+                            <label for="primary-phone" class="block text-sm font-medium text-gray-700 mb-1">Primary Phone Number</label>
+                            <input type="tel" id="primary-phone" name="primary_phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" placeholder="+880 1234 567890" required>
+                        </div>
+                         <div>
+                            <label for="secondary-phone" class="block text-sm font-medium text-gray-700 mb-1">Secondary Phone Number (Optional)</label>
+                            <input type="tel" id="secondary-phone" name="secondary_phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition" placeholder="you@example.com" required>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Step 4: Family & Emergency Contact -->
+                 <div id="step-4" class="form-step">
+                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">4. Family & Emergency</h2>
+                     <div class="space-y-8">
+                         <!-- Family Info -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-4">Family Information (Optional)</h3>
+                             <div class="p-4 border border-gray-200 rounded-lg space-y-4">
+                                <p class="text-sm text-gray-500">This information helps us understand your context for visa applications.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="md:col-span-1">
+                                        <label for="spouse-name" class="block text-sm font-medium text-gray-700">Spouse/Partner Name</label>
+                                        <input type="text" id="spouse-name" name="spouse_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                    </div>
+                                     <div class="md:col-span-1">
+                                        <label for="spouse-dob" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                                        <input type="date" id="spouse-dob" name="spouse_dob" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                    </div>
+                                     <div class="md:col-span-1">
+                                        <label for="spouse-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                        <input type="email" id="spouse-email" name="spouse_email" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="children-info" class="block text-sm font-medium text-gray-700">Children (Names & DOBs)</label>
+                                    <textarea id="children-info" name="children_info" rows="2" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" placeholder="e.g., Child One (01/01/2020), Child Two (03/05/2022)"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-4">Emergency Contact</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="emergency-name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                    <input type="text" id="emergency-name" name="emergency_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" required>
+                                </div>
+                                 <div>
+                                    <label for="emergency-relation" class="block text-sm font-medium text-gray-700">Relationship to You</label>
+                                    <input type="text" id="emergency-relation" name="emergency_relation" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" required>
+                                </div>
+                                 <div>
+                                    <label for="emergency-phone" class="block text-sm font-medium text-gray-700">Primary Phone Number</label>
+                                    <input type="tel" id="emergency-phone" name="emergency_phone" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" required>
+                                </div>
+                                 <div>
+                                    <label for="emergency-email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                                    <input type="email" id="emergency-email" name="emergency_email" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" required>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+
+                <!-- Step 5: Immigration & Travel -->
+                <div id="step-5" class="form-step">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">5. Immigration & Travel History</h2>
+                    <div class="space-y-8">
+                        <!-- Previous Visa -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-2">Previous Visa Applications</h3>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="visa_applied" value="yes" class="mr-2"> Yes</label>
+                                <label><input type="radio" name="visa_applied" value="no" class="mr-2" checked> No</label>
+                            </div>
+                            <div id="visa-details-container" class="hidden mt-4 p-4 border rounded-lg bg-gray-50">
+                                <label for="visa-details" class="block text-sm font-medium text-gray-700 mb-1">Please list country, visa type, and outcome (Approved/Refused).</label>
+                                <textarea id="visa-details" name="visa_details" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg transition"></textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- Travel History -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-4">Travel History (Last 10 Years)</h3>
+                            <div id="travel-container">
+                                <!-- Dynamic travel rows here -->
+                            </div>
+                            <button type="button" id="add-travel" class="mt-2 text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 btn">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                Add Trip
+                            </button>
+                        </div>
+
+                        <!-- Dependents -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-2">Dependents</h3>
+                            <p class="text-sm text-gray-500 mb-2">Do you plan to take your spouse or children with you?</p>
+                            <div class="flex items-center space-x-4">
+                                <label><input type="radio" name="dependents" value="yes" class="mr-2"> Yes</label>
+                                <label><input type="radio" name="dependents" value="no" class="mr-2" checked> No</label>
+                            </div>
+                              <p class="text-xs text-amber-600 mt-2 p-2 bg-amber-50 rounded-md">Note: Rules for bringing dependents have recently become stricter, especially for the UK.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Document Checklist -->
+                <div id="step-6" class="form-step">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-6">6. Document Checklist & Upload</h2>
+                    <p class="text-gray-600 mb-6">Please upload your documents. Uploaded files will be attached to your final PDF profile.</p>
+                    <div class="space-y-4 p-6 border rounded-lg bg-gray-50">
+                        <h3 class="font-semibold text-lg text-gray-800 border-b pb-2">Your Documents</h3>
+                        <div id="document-upload-container" class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 pt-2">
+                            <!-- Document upload fields will be generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Financials & Declaration -->
+                <div id="step-7" class="form-step">
+                     <h2 class="text-2xl font-semibold text-gray-700 mb-6">7. Financial Information & Declaration</h2>
+                     <div class="space-y-8">
+                         <!-- Financial Info -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-4">Financials</h3>
+                            <div class="p-4 border rounded-lg bg-gray-50 space-y-4">
+                                <p class="text-sm text-gray-500">Proving sufficient funds is a mandatory visa requirement.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                     <div>
+                                        <label for="funds-source" class="block text-sm font-medium text-gray-700">Primary Source of Funds</label>
+                                        <input type="text" id="funds-source" name="funds_source" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" placeholder="e.g., Parents, Self-Funded" required>
+                                    </div>
+                                    <div>
+                                        <label for="sponsor-name" class="block text-sm font-medium text-gray-700">Sponsor's Name & Relationship</label>
+                                        <input type="text" id="sponsor-name" name="sponsor_name" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" placeholder="e.g., John Doe (Father)" required>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label for="sponsor-income" class="block text-sm font-medium text-gray-700">Sponsor's Occupation & Annual Income (in BDT)</label>
+                                        <input type="text" id="sponsor-income" name="sponsor_income" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition" required>
+                                    </div>
+                                </div>
+                                <div class="space-y-3 pt-4">
+                                    <p class="font-medium text-sm text-gray-800">Are your financial documents ready?</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Bank Statements (last 6 months)?</span>
+                                        <div class="flex items-center space-x-3">
+                                            <label><input type="radio" name="bank_statements" value="yes" class="mr-1"> Yes</label>
+                                            <label><input type="radio" name="bank_statements" value="no" class="mr-1"> No</label>
+                                        </div>
+                                    </div>
+                                     <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Sponsor's Income Proof?</span>
+                                        <div class="flex items-center space-x-3">
+                                            <label><input type="radio" name="income_proof" value="yes" class="mr-1"> Yes</label>
+                                            <label><input type="radio" name="income_proof" value="no" class="mr-1"> No</label>
+                                        </div>
+                                    </div>
+                                     <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-600">Any recent large deposits to explain?</span>
+                                        <div class="flex items-center space-x-3">
+                                            <label><input type="radio" name="large_deposits" value="yes" class="mr-1"> Yes</label>
+                                            <label><input type="radio" name="large_deposits" value="no" class="mr-1"> No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Declaration -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-600 mb-4">Declaration</h3>
+                            <div class="flex items-start">
+                                <input id="declaration" name="declaration" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-1" required>
+                                <label for="declaration" class="ml-3 block text-sm text-gray-700">
+                                    I confirm that the information provided is true and accurate. I understand that any false information can lead to the rejection of my applications.
+                                </label>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+
+
+                <!-- Navigation Buttons -->
+                <div class="mt-10 flex justify-between items-center">
+                    <button type="button" id="prevBtn" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium btn" style="display: none;">Previous</button>
+                    <button type="button" id="nextBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium ml-auto btn">Next</button>
+                    <button type="submit" id="submitBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium btn" style="display: none;">Submit Application</button>
+                </div>
+            </form>
+            
+            <!-- Submission Success Message -->
+            <div id="successMessage" class="hidden text-center p-8">
+                 <div style="animation: fadeIn 0.5s ease-out;">
+                    <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h2 class="text-2xl font-bold text-gray-800 mt-4">Thank You!</h2>
+                    <p class="text-gray-600 mt-2">Your profile has been submitted successfully. Your formatted PDF profile is being generated.</p>
+                    <p class="text-sm text-gray-500 mt-4">If the download doesn't start automatically, please check your browser's pop-up settings.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const form = document.getElementById('studentForm');
+        const steps = Array.from(document.querySelectorAll('.form-step'));
+        const progressBar = document.getElementById('progressBar');
+        const stepIndicator = document.getElementById('stepIndicator');
+        const successMessage = document.getElementById('successMessage');
+
+        let currentStep = 0;
+        const TOTAL_STEPS = steps.length;
+        let uploadedFiles = {}; // To store base64 data of uploaded files
+        let isNavigating = false; // Prevent multiple clicks during animation
+
+        // --- DOCUMENT UPLOAD FIELDS ---
+        const documentsToUpload = [
+            { id: "passport", name: "Passport" },
+            { id: "photo", name: "Recent Photograph" },
+            { id: "cv", name: "CV / Resume" },
+            { id: "sop", name: "Statement of Purpose (SOP)" },
+            { id: "lor", name: "Letters of Recommendation (LOR)" },
+            { id: "transcripts", name: "Academic Transcripts" },
+            { id: "language_cert", name: "Language Proficiency Certificate" },
+            { id: "work_exp", name: "Work Experience Letters" },
+            { id: "financial_docs", name: "Financial Documents" }
+        ];
+
+        function createUploadField(doc) {
+            return `
+                <div class="flex flex-col">
+                    <span class="text-gray-700 text-sm font-medium mb-2">${doc.name}</span>
+                    <div class="flex items-center">
+                        <label for="file_${doc.id}" class="cursor-pointer bg-white hover:bg-gray-50 text-gray-600 text-sm font-medium py-2 px-4 border border-gray-300 rounded-lg shadow-sm btn">
+                            Choose File
+                        </label>
+                        <input type="file" id="file_${doc.id}" name="file_${doc.id}" class="hidden" data-doc-name="${doc.name}">
+                        <span id="filename_${doc.id}" class="text-xs text-gray-500 ml-3 truncate">No file selected</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initializeDocumentUploads() {
+            const container = document.getElementById('document-upload-container');
+            container.innerHTML = documentsToUpload.map(createUploadField).join('');
+
+            documentsToUpload.forEach(doc => {
+                document.getElementById(`file_${doc.id}`).addEventListener('change', handleFileUpload);
+            });
+        }
+        
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            const docId = event.target.id.replace('file_', '');
+            const docName = event.target.dataset.docName;
+            const filenameSpan = document.getElementById(`filename_${docId}`);
+
+            if (file) {
+                filenameSpan.textContent = file.name;
+                filenameSpan.classList.add('text-green-600', 'font-medium');
+                
+                const reader = new FileReader();
+                reader.onload = e => { uploadedFiles[docName] = e.target.result; };
+                reader.readAsDataURL(file);
+
+            } else {
+                filenameSpan.textContent = "No file selected";
+                filenameSpan.classList.remove('text-green-600', 'font-medium');
+                delete uploadedFiles[docName];
+            }
+        }
+
+        // --- DYNAMIC FIELD FUNCTIONS ---
+
+        function createSchoolRow(index) {
+            return `
+                <div class="dynamic-row grid grid-cols-1 md:grid-cols-4 gap-4 items-end p-4 mb-2 border-b border-gray-200" data-index="${index}">
+                    <div class="col-span-4 md:col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">Qualification</label>
+                        <select name="school_qualification_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                            <option>SSC</option><option>HSC</option><option>O-Levels</option><option>A-Levels</option><option>Diploma</option>
+                        </select>
+                    </div>
+                     <div class="col-span-4 md:col-span-3">
+                        <label class="block text-sm font-medium text-gray-700">Institution Name</label>
+                        <input type="text" name="school_institution_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                    </div>
+                     <div class="col-span-2 md:col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                        <input type="date" name="school_start_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-sm font-medium text-gray-700">End Date</label>
+                        <input type="date" name="school_end_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition">
+                    </div>
+                    <div class="col-span-4 md:col-span-2 flex justify-end">
+                         <button type="button" class="flex items-center justify-center w-7 h-7 bg-red-100 text-red-500 rounded-full hover:bg-red-200 transition btn" onclick="removeRow(this)">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createUniversityRow(index) {
+             return `
+                <div class="dynamic-row grid grid-cols-1 md:grid-cols-2 gap-4 items-end p-4 mb-2 border-b border-gray-200">
+                     <div class="md:col-span-1"><label class="block text-sm font-medium text-gray-700">Degree Title</label><input type="text" name="uni_degree_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium text-gray-700">Major</label><input type="text" name="uni_major_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-medium text-gray-700">University Name</label><input type="text" name="uni_name_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium text-gray-700">Start Date</label><input type="date" name="uni_start_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium text-gray-700">End Date</label><input type="date" name="uni_end_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium text-gray-700">MOI</label><select name="uni_moi_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"><option>English</option><option>Bengali</option><option>Other</option></select></div>
+                    <div class="md:col-span-1 flex justify-end items-center">
+                         <button type="button" class="flex items-center justify-center w-7 h-7 bg-red-100 text-red-500 rounded-full hover:bg-red-200 transition btn" onclick="removeRow(this)">
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createTravelRow(index) {
+            return `
+                 <div class="dynamic-row grid grid-cols-1 md:grid-cols-4 gap-4 items-end p-4 mb-2 border-b border-gray-200">
+                    <div class="col-span-4 md:col-span-1"><label class="block text-sm font-medium text-gray-700">Start Date</label><input type="date" name="travel_start_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="col-span-4 md:col-span-1"><label class="block text-sm font-medium text-gray-700">End Date</label><input type="date" name="travel_end_date_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="col-span-4 md:col-span-1"><label class="block text-sm font-medium text-gray-700">Country</label><input type="text" name="travel_country_${index}" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-lg transition"></div>
+                    <div class="col-span-4 md:col-span-1 flex justify-end">
+                         <button type="button" class="flex items-center justify-center w-7 h-7 bg-red-100 text-red-500 rounded-full hover:bg-red-200 transition btn" onclick="removeRow(this)">
+                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                 </div>
+            `;
+        }
+        
+        function addDynamicRow(containerId, rowCreator) {
+            const container = document.getElementById(containerId);
+            const index = container.children.length;
+            container.insertAdjacentHTML('beforeend', rowCreator(index));
+        }
+
+        window.removeRow = function(button) {
+            const row = button.closest('.dynamic-row');
+            row.classList.add('removing');
+            row.addEventListener('animationend', () => row.remove(), { once: true });
+        }
+
+        document.getElementById('add-school').addEventListener('click', () => addDynamicRow('school-container', createSchoolRow));
+        document.getElementById('add-university').addEventListener('click', () => addDynamicRow('university-container', createUniversityRow));
+        document.getElementById('add-travel').addEventListener('click', () => addDynamicRow('travel-container', createTravelRow));
+
+        // --- NAVIGATION AND VALIDATION ---
+
+        function updateUI(direction = 'next') {
+            if (isNavigating) return;
+            isNavigating = true;
+
+            const currentStepElement = steps[currentStep];
+            const nextStep = (direction === 'next') ? currentStep + 1 : currentStep - 1;
+            const nextStepElement = steps[nextStep];
+
+            currentStepElement.classList.add('fade-out');
+            
+            setTimeout(() => {
+                currentStepElement.classList.remove('form-step-active', 'fade-out');
+                nextStepElement.classList.add('form-step-active');
+                
+                currentStep = nextStep;
+                
+                // Update progress bar & indicator
+                const progress = ((currentStep + 1) / TOTAL_STEPS) * 100;
+                progressBar.style.width = `${progress}%`;
+                stepIndicator.textContent = `Step ${currentStep + 1} of ${TOTAL_STEPS}`;
+
+                // Update buttons
+                prevBtn.style.display = currentStep > 0 ? 'inline-block' : 'none';
+                nextBtn.style.display = currentStep < TOTAL_STEPS - 1 ? 'inline-block' : 'none';
+                submitBtn.style.display = currentStep === TOTAL_STEPS - 1 ? 'inline-block' : 'none';
+                isNavigating = false;
+            }, 400); // Match animation duration
+        }
+
+        function validateStep(stepIndex) {
+            const stepElement = steps[stepIndex];
+            const inputs = stepElement.querySelectorAll('input[required], textarea[required], select[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                input.classList.remove('input-error');
+                if ((input.type === 'checkbox' && !input.checked) || (input.value.trim() === '')) {
+                    isValid = false;
+                    input.classList.add('input-error');
+                }
+            });
+
+            if (stepIndex === 1) { // Step 2 (index 1) preference validation
+                const isChecked = Array.from(stepElement.querySelectorAll('input[name="preference"]')).some(cb => cb.checked);
+                const errorMsg = document.getElementById('preference-error');
+                errorMsg.classList.toggle('hidden', isChecked);
+                if (!isChecked) isValid = false;
+            }
+
+            return isValid;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                updateUI('next');
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            updateUI('prev');
+        });
+        
+        document.querySelectorAll('input[name="visa_applied"]').forEach(radio => {
+            radio.addEventListener('change', e => {
+                document.getElementById('visa-details-container').classList.toggle('hidden', e.target.value !== 'yes');
+            });
+        });
+
+        // --- FORM SUBMISSION ---
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateStep(currentStep)) return;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...`;
+                
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwB9BSH9gyeQBoKw3smuOXjlGv3r1zIdVLsa3zVg16l0xtUi8iBBcJhtijob5_i06MF/exec';
+
+            const formData = new FormData(form);
+            const data = {};
+            let schoolData = [], uniData = [], travelData = [];
+            
+            for (let i = 0; i < document.getElementById('school-container').children.length; i++) { schoolData.push(`Q: ${formData.get(`school_qualification_${i}`)}, Inst: ${formData.get(`school_institution_${i}`)}, Dates: ${formData.get(`school_start_date_${i}`)} to ${formData.get(`school_end_date_${i}`)}`); }
+            for (let i = 0; i < document.getElementById('university-container').children.length; i++) { uniData.push(`Degree: ${formData.get(`uni_degree_${i}`)}, Major: ${formData.get(`uni_major_${i}`)}, Uni: ${formData.get(`uni_name_${i}`)}`); }
+            for (let i = 0; i < document.getElementById('travel-container').children.length; i++) { travelData.push(`Country: ${formData.get(`travel_country_${i}`)}, Dates: ${formData.get(`travel_start_date_${i}`)} to ${formData.get(`travel_end_date_${i}`)}`); }
+
+            for(let [key, value] of formData.entries()) { if(!key.startsWith('school_') && !key.startsWith('uni_') && !key.startsWith('travel_') && !key.startsWith('file_')) { data[key] = value; } }
+            
+            data.preference = formData.getAll('preference').join(', ');
+            data.school_education = schoolData.join(' | ');
+            data.university_education = uniData.join(' | ');
+            data.travel_history = travelData.join(' | ');
+
+            const submissionDataForSheet = {...data, uploaded_documents_list: Object.keys(uploadedFiles).join(', ') || 'None'};
+
+            fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(submissionDataForSheet)})
+            .then(res => { if(res.ok) return res.text(); throw new Error('Network response error.'); })
+            .then(response => {
+                console.log('Success:', response);
+                form.style.display = 'none';
+                document.getElementById('progressBar').parentElement.parentElement.style.display = 'none';
+                successMessage.classList.remove('hidden');
+                generatePDF(data);
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('An error occurred. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            });
+        });
+        
+        // --- PDF GENERATION ---
+        function generatePDF(data) {
+            const doc = new jsPDF();
+            let y = 15;
+            const margin = 15;
+            const pageHeight = doc.internal.pageSize.height;
+            const pageWidth = doc.internal.pageSize.width;
+            const usableWidth = pageWidth - margin * 2;
+
+            const checkY = (requiredHeight = 10) => {
+                if (y + requiredHeight > pageHeight - margin) {
+                    doc.addPage();
+                    y = margin;
+                }
+            };
+
+            // --- PDF Header ---
+            doc.setFontSize(22);
+            doc.setFont("helvetica", "bold");
+            doc.text("Student Profile Application", pageWidth / 2, y, { align: "center" });
+            y += 15;
+
+            // --- Table Drawing Function ---
+            const drawTableForSection = (title, sectionData) => {
+                // Filter out items with no value to avoid empty rows in the table
+                const filteredData = sectionData.filter(item => item.value && item.value.trim() !== '' && item.value.trim() !== 'N/A');
+                if (filteredData.length === 0) return; // Don't draw the section if all fields are empty
+
+                checkY(20);
+                // Section Title
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text(title, margin, y);
+                y += 8;
+
+                const col1Width = 55;
+                const col2Width = usableWidth - col1Width;
+                const cellPadding = 3;
+                const lineHeight = 5; // Approximate height for 11pt font line
+
+                doc.setLineWidth(0.2);
+                doc.setFontSize(11);
+
+                filteredData.forEach(item => {
+                    // Handle multi-line data for academic/travel history by replacing separators
+                    const itemValue = item.value.replace(/ \| /g, '\n\n');
+
+                    const labelText = doc.splitTextToSize(item.label, col1Width - cellPadding * 2);
+                    const valueText = doc.splitTextToSize(itemValue, col2Width - cellPadding * 2);
+
+                    const rowHeight = Math.max(labelText.length, valueText.length) * lineHeight + (cellPadding * 2);
+                    
+                    checkY(rowHeight);
+
+                    // Draw Cell Borders
+                    doc.rect(margin, y, col1Width, rowHeight);
+                    doc.rect(margin + col1Width, y, col2Width, rowHeight);
+
+                    // Print Text in Cells
+                    doc.setFont("helvetica", "bold");
+                    doc.text(labelText, margin + cellPadding, y + cellPadding + 4);
+                    
+                    doc.setFont("helvetica", "normal");
+                    doc.text(valueText, margin + col1Width + cellPadding, y + cellPadding + 4);
+                    
+                    y += rowHeight;
+                });
+                y += 10; // Space after each section table
+            };
+            
+            // --- Populating Sections with Data ---
+            drawTableForSection("University Preferences", [
+                { label: "Preference", value: data.preference },
+                { label: "Preferred Countries", value: [data.preferred_country_1, data.preferred_country_2, data.preferred_country_3, data.preferred_country_4, data.preferred_country_5].filter(c => c).join(', ') },
+                { label: "Current Subject", value: data.current_subject }, 
+                { label: "Fields of Interest", value: data.fields_of_interest },
+                { label: "Research Interest", value: data.research_interest }, 
+                { label: "Preferred Universities", value: data.preferred_universities }
+            ]);
+            drawTableForSection("Contact Information", [
+                 { label: "Current Address", value: data.current_address }, 
+                 { label: "Permanent Address", value: data.permanent_address },
+                 { label: "Primary Phone", value: data.primary_phone }, 
+                 { label: "Secondary Phone", value: data.secondary_phone }, 
+                 { label: "Email", value: data.email }
+            ]);
+            drawTableForSection("Academic Background", [
+                 { label: "School/College", value: data.school_education },
+                 { label: "University", value: data.university_education },
+            ]);
+            drawTableForSection("Family & Emergency", [
+                 { label: "Spouse/Partner", value: `${data.spouse_name || ''} (DOB: ${data.spouse_dob || ''})`.replace(' (DOB: )', '') },
+                 { label: "Children Info", value: data.children_info },
+                 { label: "Emergency Contact", value: `${data.emergency_name} (${data.emergency_relation})` }, 
+                 { label: "Emergency Phone", value: data.emergency_phone },
+                 { label: "Emergency Email", value: data.emergency_email },
+            ]);
+            drawTableForSection("Immigration & Travel", [
+                { label: "Previous Visa Applied", value: data.visa_applied }, 
+                { label: "Visa Details", value: data.visa_details },
+                { label: "Travel History", value: data.travel_history }, 
+                { label: "Bringing Dependents", value: data.dependents },
+            ]);
+            drawTableForSection("Financial Information", [
+                 { label: "Source of Funds", value: data.funds_source }, 
+                 { label: "Sponsor", value: data.sponsor_name },
+                 { label: "Sponsor's Income", value: data.sponsor_income }, 
+                 { label: "Bank Statements", value: data.bank_statements },
+                 { label: "Income Proof", value: data.income_proof }, 
+                 { label: "Large Deposits", value: data.large_deposits },
+            ]);
+
+            // --- Uploaded Documents Section (also as a table) ---
+            checkY(20);
+            doc.setFontSize(16); doc.setFont("helvetica", "bold");
+            doc.text("Uploaded Documents", margin, y); y += 8;
+            
+            if (Object.keys(uploadedFiles).length > 0) {
+                 doc.setLineWidth(0.2);
+                 const cellPadding = 3;
+                 Object.entries(uploadedFiles).forEach(([name, dataUrl]) => {
+                    const rowHeight = 12;
+                    checkY(rowHeight);
+                    
+                    doc.rect(margin, y, usableWidth, rowHeight);
+                    
+                    doc.setFontSize(11);
+                    doc.setFont("helvetica", "bold");
+                    doc.text(name, margin + cellPadding, y + cellPadding + 4);
+                    
+                    doc.setFont("helvetica", "normal");
+                    doc.setTextColor(0, 0, 255); // Blue for link
+                    doc.textWithLink("Download Attached File", margin + 60, y + cellPadding + 4, { url: dataUrl });
+                    doc.setTextColor(0, 0, 0); // Reset color
+                    
+                    y += rowHeight;
+                });
+            } else {
+                doc.setFontSize(11);
+                doc.setFont("helvetica", "italic");
+                doc.text("No documents were uploaded for this profile.", margin, y);
+            }
+
+            doc.save(`Student_Profile_${data.email}.pdf`);
+        }
+
+        // Initialize the form
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDocumentUploads();
+            addDynamicRow('school-container', createSchoolRow);
+            addDynamicRow('university-container', createUniversityRow);
+            steps[0].classList.add('form-step-active');
+            // Initial progress bar set up
+            progressBar.style.width = `${(1 / TOTAL_STEPS) * 100}%`;
+        });
+    </script>
+</body>
+</html>
+
