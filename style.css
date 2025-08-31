@@ -1,0 +1,91 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f1f5f9;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { opacity: 0; max-height: 0; transform: translateY(-20px); }
+    to { opacity: 1; max-height: 1000vh; transform: translateY(0); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes rowIn {
+    from { opacity: 0; max-height: 0; transform: scaleY(0.8); }
+    to { opacity: 1; max-height: 500px; transform: scaleY(1); }
+}
+
+@keyframes rowOut {
+    from { opacity: 1; max-height: 500px; transform: scaleY(1); }
+    to { opacity: 0; max-height: 0; transform: scaleY(0.8); padding:0; margin:0; border:0;}
+}
+
+.task-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.dynamic-row {
+    animation: rowIn 0.4s ease-out forwards;
+    overflow: hidden;
+}
+
+.dynamic-row.removing {
+    animation: rowOut 0.4s ease-in forwards;
+}
+
+.btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    outline: none;
+}
+
+/* Accordion styles for SOP/LOR */
+details > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    color: #1e293b;
+    transition: background-color 0.2s ease;
+}
+
+details > summary:hover {
+    background-color: #f1f5f9;
+}
+
+details[open] > summary {
+    background-color: #e0e7ff;
+    color: #312e81;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
