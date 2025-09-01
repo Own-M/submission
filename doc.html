@@ -1,110 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation Task - Gainers Future</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOP & LOR Interactive Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="p-4 sm:p-6 md:p-8">
-    <div class="container mx-auto max-w-4xl">
-        <a href="index.html" class="inline-block mb-6 text-rose-600 hover:text-rose-800">&larr; Back to Dashboard</a>
-        <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12">
-            <div id="docs-form">
-                <form>
-                    <input type="hidden" name="form_type" value="Documentation Task">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Documentation Task</h2>
-                    <div class="space-y-8">
-                        <!-- SOP Section -->
-                        <section>
-                            <h3 class="text-2xl font-semibold text-gray-700 mb-4">Statement of Purpose (SOP) Written Task</h3>
-                            <div class="prose max-w-none p-4 bg-rose-50 border border-rose-200 rounded-lg text-rose-900">
-                                <h4>Why are we even writing this SOP?</h4>
-                                <p>This isn’t just a statement of achievements. It’s a statement of you. It’s your story. Let’s write something that feels like you. Real, imperfect, human. Let’s build it together.</p>
-                                <p><strong>Instruction:</strong> Please respond only to the questions that resonate with you and reflect moments or stories that have truly shaped who you are.</p>
-                            </div>
-                            <div class="space-y-4 mt-6">
-                                <details>
-                                    <summary>Phase 1 Questions</summary>
-                                    <div class="p-4 border rounded-b-lg space-y-4">
-                                        <label class="block font-medium">The program you wish to study and reasons for choosing it?</label><textarea name="sop_q1" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                        <label class="block font-medium">Knowledge and skills you want to acquire?</label><textarea name="sop_q2" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                        <label class="block font-medium">Personality, hobbies, and extracurriculars?</label><textarea name="sop_q3" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                    </div>
-                                </details>
-                                <details>
-                                    <summary>Phase 2 Questions</summary>
-                                    <div class="p-4 border rounded-b-lg space-y-4">
-                                         <label class="block font-medium">What aspects of your background have shaped you?</label><textarea name="sop_q4" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                         <label class="block font-medium">Reflect on a significant challenge you faced. How did it change you?</label><textarea name="sop_q5" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                         <label class="block font-medium">Write about a mentor or role model who influenced you.</label><textarea name="sop_q6" rows="3" class="w-full p-2 border rounded-md"></textarea>
-                                    </div>
-                                </details>
-                            </div>
-                        </section>
-                        <!-- LOR Section -->
-                        <section>
-                            <h3 class="text-2xl font-semibold text-gray-700 mt-12 mb-4">Letter of Recommendation (LOR) Task</h3>
-                             <div class="space-y-4">
-                                <details>
-                                    <summary>Recommender 1 Details</summary>
-                                    <div class="p-4 border rounded-b-lg space-y-4">
-                                        <p class="text-sm text-gray-600">How do you know this professor? What qualities should be highlighted?</p>
-                                        <textarea name="lor1_questions" rows="4" class="w-full p-2 border rounded-md"></textarea>
-                                        <h4 class="font-semibold pt-4">Referee's Details</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <input type="text" name="lor1_name" placeholder="Recommender Name" class="p-2 border rounded-md">
-                                            <input type="text" name="lor1_relationship" placeholder="Relationship to you" class="p-2 border rounded-md">
-                                            <input type="text" name="lor1_designation" placeholder="Designation" class="p-2 border rounded-md">
-                                            <input type="email" name="lor1_email" placeholder="Email" class="p-2 border rounded-md">
-                                        </div>
-                                    </div>
-                                </details>
-                                 <details>
-                                    <summary>Recommender 2 Details</summary>
-                                     <div class="p-4 border rounded-b-lg space-y-4">
-                                         <p class="text-sm text-gray-600">How do you know this professor? What qualities should be highlighted?</p>
-                                        <textarea name="lor2_questions" rows="4" class="w-full p-2 border rounded-md"></textarea>
-                                        <h4 class="font-semibold pt-4">Referee's Details</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <input type="text" name="lor2_name" placeholder="Recommender Name" class="p-2 border rounded-md">
-                                            <input type="text" name="lor2_relationship" placeholder="Relationship to you" class="p-2 border rounded-md">
-                                            <input type="text" name="lor2_designation" placeholder="Designation" class="p-2 border rounded-md">
-                                            <input type="email" name="lor2_email" placeholder="Email" class="p-2 border rounded-md">
-                                        </div>
-                                    </div>
-                                </details>
-                                <details>
-                                    <summary>Recommender 3 Details</summary>
-                                     <div class="p-4 border rounded-b-lg space-y-4">
-                                         <p class="text-sm text-gray-600">How do you know this professor? What qualities should be highlighted?</p>
-                                        <textarea name="lor3_questions" rows="4" class="w-full p-2 border rounded-md"></textarea>
-                                        <h4 class="font-semibold pt-4">Referee's Details</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <input type="text" name="lor3_name" placeholder="Recommender Name" class="p-2 border rounded-md">
-                                            <input type="text" name="lor3_relationship" placeholder="Relationship to you" class="p-2 border rounded-md">
-                                            <input type="text" name="lor3_designation" placeholder="Designation" class="p-2 border rounded-md">
-                                            <input type="email" name="lor3_email" placeholder="Email" class="p-2 border rounded-md">
-                                        </div>
-                                    </div>
-                                </details>
-                            </div>
-                        </section>
-                    </div>
-                    <button type="submit" class="w-full mt-8 bg-rose-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-rose-700 btn">Submit to Documentation Team</button>
-                </form>
-            </div>
-             <div id="submission-success" class="hidden text-center p-8">
-                <div style="animation: fadeIn 0.5s ease-out;">
-                   <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                   <h2 class="text-2xl font-bold text-gray-800 mt-4">Thank You!</h2>
-                   <p class="text-gray-600 mt-2">Your information has been submitted successfully.</p>
-               </div>
-           </div>
-        </div>
+<body class="bg-gradient-to-br from-rose-50 via-white to-rose-100 font-inter p-4 sm:p-6 md:p-10">
+  <div class="container mx-auto max-w-5xl">
+    <a href="index.html" class="inline-block mb-6 text-rose-600 hover:text-rose-800 font-medium">&larr; Back to Dashboard</a>
+    <div class="bg-white rounded-2xl shadow-2xl p-6 sm:p-10">
+      <form>
+        <input type="hidden" name="form_type" value="SOP & LOR Form" />
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-6">🎓 SOP & LOR Builder</h1>
+        <p class="text-gray-600 text-lg mb-8">Not just a form – this is your storybook. Answer only what feels true. Share the moments, values, and goals that shaped who you are. Let’s make it enjoyable ✨</p>
+
+        <!-- SOP Section -->
+        <section class="mb-12">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">✍️ Statement of Purpose</h2>
+          <div class="bg-rose-50 border border-rose-200 p-5 rounded-xl text-rose-900 mb-6">
+            <p class="font-medium">This isn’t just about achievements – it’s about <span class="underline">you</span>. Write like you’re telling your story to a close friend. Be honest, be real, be you.</p>
+          </div>
+          <div class="space-y-4">
+            <details class="group">
+              <summary class="cursor-pointer py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium">🌟 Phase 1: Purpose, Past, Program, Personality</summary>
+              <div class="p-4 space-y-4 border-l-4 border-rose-400 bg-rose-50 mt-2 rounded-r-lg">
+                <label class="block">Why this program? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">What skills do you hope to gain? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Your long & short-term goals? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Work/Internships/Projects? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Why this university/program? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Your personality, hobbies, or unique traits? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+              </div>
+            </details>
+
+            <details class="group">
+              <summary class="cursor-pointer py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium">💡 Phase 2: Deep Dives</summary>
+              <div class="p-4 space-y-4 border-l-4 border-rose-400 bg-rose-50 mt-2 rounded-r-lg">
+                <label class="block">Childhood influences or upbringing? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">A challenge you overcame? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Core values or beliefs? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">A mentor or role model’s influence? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Passions, hobbies, or creative pursuits? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Traditions, culture, or community experiences? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+                <label class="block">Your hopes & future dreams? <textarea class="w-full p-3 border rounded-lg mt-1" rows="3"></textarea></label>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <!-- LOR Section -->
+        <section>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">📜 Letters of Recommendation</h2>
+          <p class="text-gray-600 mb-6">Your recommenders help shine light on your strengths. Let’s make their job easy by sharing key details.</p>
+          <div class="space-y-6">
+            <!-- Recommender Template -->
+            <details>
+              <summary class="cursor-pointer py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium">👩‍🏫 Recommender 1</summary>
+              <div class="p-4 space-y-4 border-l-4 border-indigo-400 bg-indigo-50 mt-2 rounded-r-lg">
+                <label class="block">How do you know them? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Qualities to highlight? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Memorable project/achievement? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Recommender Name" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Relationship" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Designation" class="p-2 border rounded-md">
+                  <input type="email" placeholder="Email" class="p-2 border rounded-md">
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary class="cursor-pointer py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium">👩‍🏫 Recommender 2</summary>
+              <div class="p-4 space-y-4 border-l-4 border-indigo-400 bg-indigo-50 mt-2 rounded-r-lg">
+                <label class="block">How do you know them? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Qualities to highlight? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Memorable project/achievement? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Recommender Name" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Relationship" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Designation" class="p-2 border rounded-md">
+                  <input type="email" placeholder="Email" class="p-2 border rounded-md">
+                </div>
+              </div>
+            </details>
+
+            <details>
+              <summary class="cursor-pointer py-2 px-4 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium">👩‍🏫 Recommender 3</summary>
+              <div class="p-4 space-y-4 border-l-4 border-indigo-400 bg-indigo-50 mt-2 rounded-r-lg">
+                <label class="block">How do you know them? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Qualities to highlight? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <label class="block">Memorable project/achievement? <textarea class="w-full p-3 border rounded-lg mt-1" rows="2"></textarea></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input type="text" placeholder="Recommender Name" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Relationship" class="p-2 border rounded-md">
+                  <input type="text" placeholder="Designation" class="p-2 border rounded-md">
+                  <input type="email" placeholder="Email" class="p-2 border rounded-md">
+                </div>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <button type="submit" class="w-full mt-10 bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:from-rose-600 hover:to-pink-700 transition">🚀 Submit to Documentation Team</button>
+      </form>
+
+      <!-- Success Message -->
+      <div id="submission-success" class="hidden text-center p-8">
+        <svg class="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <h2 class="text-2xl font-bold text-gray-800 mt-4">🎉 Thank You!</h2>
+        <p class="text-gray-600 mt-2">Your story has been submitted successfully. Our team will craft it beautifully.</p>
+      </div>
     </div>
-    <script src="forms.js"></script>
+  </div>
 </body>
 </html>
